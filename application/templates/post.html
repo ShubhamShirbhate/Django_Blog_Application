@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Posts</title>
+</head>
+<body>
+    <h2>Posts</h2>
+    <div id="posts"></div>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('access_token');
+
+            const response = await fetch('/api/posts/', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const postsDiv = document.getElementById('posts');
+                postsDiv.innerHTML = data.map(post => `<div><h3>${post.title}</h3><p>${post.content}</p></div>`).join('');
+            } else {
+                alert('Failed to fetch posts. Please login.');
+            }
+        });
+    </script>
+</body>
+</html>
